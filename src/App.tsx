@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout, type NavItem } from './components/Layout';
 import { AreaLineChart, Card, CardTitle, DonutChart, GroupedBarChart, Heatmap, InfoMessage, SegmentedControl, StatCard } from './components/UI';
@@ -80,11 +80,19 @@ function App() {
   );
 }
 
-function ProtectedRoute({ role, path, children }: { role: Role; path: string; children: JSX.Element }) {
+function ProtectedRoute({
+  role,
+  path,
+  children,
+}: {
+  role: Role;
+  path: string;
+  children: ReactNode;
+}) {
   if (!ROLE_PERMISSIONS[role].includes(path)) {
     return <Navigate to="/" replace />;
   }
-  return children;
+  return <>{children}</>;
 }
 
 function DashboardPage({ role, allowedRoutes, notify, message }: { role: Role; allowedRoutes: string[]; notify: (action: string) => void; message: string }) {
